@@ -18,6 +18,7 @@ exports.register = async (req, res) => {                     // É assincrona po
         }
     
         req.flash('success', 'Contato registrado com sucesso.');
+        console.log(contato.contato._id);
         req.session.save(() => res.redirect(`/contato/index/${contato.contato._id}`));        // Exibe contato(constante).contato(construtora na ContatoModel)._id(chave que aparece no banco de dados MongoDB)
         return;
     } catch(e) {
@@ -34,3 +35,24 @@ exports.editIndex = async function(req, res) {
 
     res.render('contato', { contato });
 };
+
+exports.edit = async function(req, res) {
+    try {
+        if(!req.params.id) return res.render('404');
+        const contato = new Contato(req.body);
+        await contato.edit(req.params.id);                       // Chama a função Contato.prototype.edit que está no ContatoModel
+    
+        if(contato.errors.length > 0) {
+            req.flash('errors', contato.errors);
+            req.session.save(() => res.redirect('/contato/index'));
+            return;
+        }
+    
+        req.flash('success', 'Contato editado com sucesso.');
+        req.session.save(() => res.redirect(`/contato/index/${contato.contato._id}`));            // Exibe contato(constante).contato(construtora na ContatoModel)._id(chave que aparece no banco de dados MongoDB)
+        return;
+    } catch(e) {
+        console.log(e);
+        res.render('404');
+    }
+}

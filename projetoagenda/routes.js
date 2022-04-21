@@ -18,7 +18,8 @@ route.get('/login/logout', loginController.logout);
 
 // Rotas de contato
 route.get('/contato/index', loginRequired, contatoController.index);  // loginRequired é um middleware e contatoController.index é o controller que renderiza a página contato nas views // Primeiro ele faz o requirimento do login e se passar ele vai renderizar os contatos
-route.post('/contato/register', loginRequired, contatoController.register); // loginRequired é um middleware que olha se o usuário está logado
-route.get('/contato/index/:id', loginRequired, contatoController.editIndex); // loginRequired é um middleware que olha se o usuário está logado
+route.post('/contato/register', loginRequired, contatoController.register); // loginRequired é um middleware que olha se o usuário está logado, contatoController.register é o caminho para registrar o contato
+route.get('/contato/index/:id', loginRequired, contatoController.editIndex); // loginRequired é um middleware que olha se o usuário está logado 
+route.post('/contato/edit/:id', loginRequired, contatoController.edit); // loginRequired é um middleware que olha se o usuário está logado
 
 module.exports = route;
